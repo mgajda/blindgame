@@ -33,17 +33,12 @@ getSample('sounds/conv-alcuin_s1r1front_bformat.wav',function(buffer){
 });
 
 var spatialPanner = ctx.createPanner();
-var convolver = ctx.createConvolver();
 var convolver2 = ctx.createConvolver();
 
 
 var input = ctx.createGain();
 
-input.connect(convolver);
-convolver.connect(spatialPanner);
 convolver2.connect(ctx.destination);
-spatialPanner.connect(ctx.destination);
-
 
 var playerStep = function() {
 	var playerFootsteps = ctx.createBufferSource();
@@ -88,15 +83,17 @@ var sceneObjects = [
 			z: 300,
 		},
 		loop: true,
+		gain: 1, // float between 0.0 - 1.0
 	},
 	{
 		'name' : 'river1',
 		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
 		'worldCoords' : {
-			x: 280,
+			x: 295,
 			z: 300,
 		},
 		loop: true,
+		gain: 1, // float between 0.0 - 1.0
 	},
 	{
 		'name' : 'river2',
@@ -106,6 +103,7 @@ var sceneObjects = [
 			z: 340,
 		},
 		loop: true,
+		gain: 1, // float between 0.0 - 1.0
 	},
 	{
 		'name' : 'river3',
@@ -115,6 +113,7 @@ var sceneObjects = [
 			z: 380,
 		},
 		loop: true,
+		gain: 1, // float between 0.0 - 1.0
 	},
 	{
 		'name' : 'river4',
@@ -124,8 +123,21 @@ var sceneObjects = [
 			z: 420,
 		},
 		loop: true,
+		gain: 1, // float between 0.0 - 1.0
 	},
 
+];
+
+var quests = [
+	{
+		name: 'Quest 1',
+		mission: 'Walk towards the radio.<br>',
+		activated: false,
+		completionActivates: 'Quest 2'
+	},
+	{
+		name: 'Quest 2',
+	}
 ];
 
 var player = {
@@ -193,8 +205,13 @@ var eventLoop = function() {
 			getSample('sounds/' + object.soundFile, function(buffer){
 				object.bs = ctx.createBufferSource();
 				object.bs.buffer = buffer;
+
+				object.convolver = ctx.createConvolver();
+				object.convolver.buffer = convolverBuffer;
+
 				object.panner = ctx.createPanner();
-				object.bs.connect(object.panner);
+				object.bs.connect(object.convolver);
+				object.convolver.connect(object.panner);
 				object.panner.connect(ctx.destination);
 				object.bs.start();
 				object.bs.loop = object.loop; 
@@ -221,4 +238,6 @@ var eventLoop = function() {
 
 };
 
-window.setInterval(eventLoop, 1000/fps);
+window.setTimeout(function(){
+	window.setInterval(eventLoop, 1000/fps);
+}, 2000);

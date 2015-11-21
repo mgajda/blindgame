@@ -56,8 +56,7 @@ var playerStep = function() {
 
 	playerFootsteps.onended = function(){
 		sounds.playerFootsteps = false;
-
-	console.log('player footstep stop');
+		console.log('player footstep stop');
 	};
 }
 
@@ -82,21 +81,51 @@ var sounds = { };
 
 var sceneObjects = [
 	{
-		'name' : 'radio',
+		'name' : 'radio2',
 		'soundFile' : '262267__gowlermusic__radio-static.wav',
 		'worldCoords' : {
-			x: 300,
+			x: 220,
 			z: 300,
 		},
+		loop: true,
 	},
 	{
-		'name' : 'radio',
-		'soundFile' : '262267__gowlermusic__radio-static.wav',
+		'name' : 'river1',
+		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
 		'worldCoords' : {
-			x: 300,
+			x: 280,
 			z: 300,
 		},
+		loop: true,
 	},
+	{
+		'name' : 'river2',
+		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
+		'worldCoords' : {
+			x: 280,
+			z: 340,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'river3',
+		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
+		'worldCoords' : {
+			x: 280,
+			z: 380,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'river4',
+		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
+		'worldCoords' : {
+			x: 230,
+			z: 420,
+		},
+		loop: true,
+	},
+
 ];
 
 var player = {
@@ -168,6 +197,7 @@ var eventLoop = function() {
 				object.bs.connect(object.panner);
 				object.panner.connect(ctx.destination);
 				object.bs.start();
+				object.bs.loop = object.loop; 
 				console.log('start sound for object ' + object.name);
 			});
 		}

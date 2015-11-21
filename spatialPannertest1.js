@@ -31,7 +31,7 @@ $(document).ready(function(){
 	$('body').mousemove(function(e){
 		var coords = {
 			x : e.pageX - $('div#listener').offset().left,
-			y : e.pageY - $('div#listener').offset().top
+			y : e.pageY - $('div#listener').offset().top,
 		};
 
 		coords.x = Math.min(200, coords.x);
@@ -40,7 +40,10 @@ $(document).ready(function(){
 		coords.y = Math.min(200, coords.y);
 		coords.y = Math.max(-200, coords.y);
 
+		coords.d = Math.sqrt(coords.x*coords.x + coords.y*coords.y);
+
 		console.log(coords.x/200, 0, coords.y/200);
 		spatialPanner.setPosition(coords.x/200, 0, coords.y/200);
+		spatialPanner.refDistance = (200 - coords.d) / 200;
 	});
 });

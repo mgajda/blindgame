@@ -82,20 +82,13 @@ var sounds = { };
 
 var sceneObjects = [
 	{
-		'name' : 'radio',
+		'name' : 'radio2',
 		'soundFile' : '262267__gowlermusic__radio-static.wav',
 		'worldCoords' : {
-			x: 300,
+			x: 220,
 			z: 300,
 		},
-	},
-	{
-		'name' : 'radio',
-		'soundFile' : '262267__gowlermusic__radio-static.wav',
-		'worldCoords' : {
-			x: 300,
-			z: 300,
-		},
+		loop: true,
 	},
 ];
 
@@ -168,6 +161,7 @@ var eventLoop = function() {
 				object.bs.connect(object.panner);
 				object.panner.connect(ctx.destination);
 				object.bs.start();
+				object.bs.loop = object.loop; 
 				console.log('start sound for object ' + object.name);
 			});
 		}

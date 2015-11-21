@@ -84,8 +84,8 @@ var sceneObjects = [
 		'name' : 'radio2',
 		'soundFile' : '262267__gowlermusic__radio-static.wav',
 		'worldCoords' : {
-			x: 220,
-			z: 300,
+			x: 120,
+			z: 200,
 		},
 		loop: true,
 	},
@@ -125,7 +125,60 @@ var sceneObjects = [
 		},
 		loop: true,
 	},
-
+	{
+		'name' : 'duck',
+		'soundFile' : 'Mallard Duck Quacks-SoundBible.com-289141159.wav',
+		'worldCoords' : {
+			x: 220,
+			z: 400,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'tree',
+		'soundFile' : '177778__dheming__wood-creak-03.wav',
+		'worldCoords' : {
+			x: 100,
+			z: 400,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'tree2',
+		'soundFile' : '177778__dheming__wood-creak-03.wav',
+		'worldCoords' : {
+			x: 140,
+			z: 300,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'tree3',
+		'soundFile' : '177778__dheming__wood-creak-03.wav',
+		'worldCoords' : {
+			x: 230,
+			z:  80,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'door',
+		'soundFile' : '219492__jarredgibb__door-creak-02.wav',
+		'worldCoords' : {
+			x: 0,
+			z: 0,
+		},
+		loop: true,
+	},
+	{
+		'name' : 'alligator',
+		'soundFile' : 'Alligator Hissing-SoundBible.com-638955379.wav',
+		'worldCoords' : {
+			x: 300,
+			z: 300,
+		},
+		loop: true,
+	},
 ];
 
 var player = {

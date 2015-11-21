@@ -79,11 +79,12 @@ var sceneObjects = [
 		'name' : 'radio2',
 		'soundFile' : '262267__gowlermusic__radio-static.wav',
 		'worldCoords' : {
-			x: 120,
-			z: 200,
+			x: 220,
+			z: 265,
 		},
 		loop: true,
 		gain: 1, // float between 0.0 - 1.0
+		solvesQuest: 'quest1'
 	},
 	{
 		'name' : 'river1',
@@ -109,30 +110,33 @@ var sceneObjects = [
 		'name' : 'river3',
 		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
 		'worldCoords' : {
-			x: 280,
+			x: 240,
 			z: 380,
 		},
 		loop: true,
 		gain: 1, // float between 0.0 - 1.0
+		solvesQuest: 'quest2',
+		radius: 30,
 	},
 	{
 		'name' : 'river4',
 		'soundFile' : '325182__kentspublicdomain__river-stream-creek-sound-of-waves-moving-water.wav',
 		'worldCoords' : {
-			x: 230,
-			z: 420,
+			x: 220,
+			z: 400,
 		},
 		loop: true,
 		gain: 1, // float between 0.0 - 1.0
 	},
 	{
 		'name' : 'duck',
-		'soundFile' : 'Mallard Duck Quacks-SoundBible.com-289141159.wav',
+		'soundFile' : 'Mallard-Duck-Quacks-SoundBible.com-289141159.wav',
 		'worldCoords' : {
 			x: 220,
 			z: 400,
 		},
 		loop: true,
+		solvesQuest: 'quest3',
 	},
 	{
 		'name' : 'tree',
@@ -170,28 +174,35 @@ var sceneObjects = [
 		},
 		loop: true,
 	},
-	{
-		'name' : 'alligator',
-		'soundFile' : 'Alligator Hissing-SoundBible.com-638955379.wav',
-		'worldCoords' : {
-			x: 300,
-			z: 300,
-		},
-		loop: true,
-	},
 ];
 
-var quests = [
-	{
-		name: 'Quest 1',
-		mission: 'Walk towards the radio.<br>',
-		activated: false,
-		completionActivates: 'Quest 2'
+var quests = {
+	'quest1' : {
+		mission: 'Walk towards the radio.<br>-<br>',
+		activated: true,
+		completed: false,
+		completionActivates: 'quest2',
 	},
-	{
-		name: 'Quest 2',
+	'quest2' : {
+		mission: 'You picked up some bread. There seems to be nothing else. Maybe it\'s a good idea to follow the river.<br>-<br>',
+		completed: false,
+		activated: false,
+		completionActivates: 'quest3',
+	},
+	'quest3' : {
+		mission: 'Hmm, ducks? Get closer. <br>-<br>',
+		name : 'ducksandwich',
+		completed: false,
+		activated: false,
+		completionActivates: 'quest4',
+	},
+	'quest4' : {
+		completed: false,
+		activated: false,
+		mission: 'Ah... ducks. Ducks + bread = duck sandwich. The rest, they say, is history. <br>-<br>',
+		completionActivates: 'quest5',
 	}
-];
+};
 
 var player = {
 	worldCoords: {
@@ -250,7 +261,6 @@ var eventLoop = function() {
 			player.worldCoords.x, player.worldCoords.z
 		);
 
-
 		if (d < maxHearingDistance && !sounds[object.name]) {
 			sounds[object.name] = true;
 			// start sound
@@ -286,11 +296,37 @@ var eventLoop = function() {
 				(object.worldCoords.z - player.worldCoords.z) / maxHearingDistance
 			);
 			object.panner.refDistance = (maxHearingDistance - d) / maxHearingDistance;
+
+			if (( object.radius && d < object.radius ) || d < 20) {
+				if (object.solvesQuest && quests[object.solvesQuest].activated) {
+					quests[object.solvesQuest].activated = false;
+					quests[object.solvesQuest].completed = true;
+
+					var nextQuest = quests[quests[object.solvesQuest].completionActivates];
+					nextQuest.activated = true;
+					$('div#instructions').prepend(nextQuest.mission);
+
+					if (quests[object.solvesQuest].name) {
+						if (quests[object.solvesQuest].name === 'ducksandwich') {
+							var d = sceneObjects.filter(function(obj){
+								return obj.name === 'duck';
+							});
+							d[0].bs.stop();
+						}
+					}
+
+				}
+			}
 		}
 	});
 
 };
 
+var initWorld = function() {
+	$('div#instructions').prepend(quests['quest1'].mission);
+};
+
 window.setTimeout(function(){
+	initWorld();
 	window.setInterval(eventLoop, 1000/fps);
 }, 2000);

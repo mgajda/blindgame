@@ -18,11 +18,17 @@ getSample('sounds/step-217476__agaxly__walk-3.wav', function(buffer){
 	player.start(ctx.currentTime)
 });
 
+getSample('sounds/conv-alcuin_s1r1front_bformat.wav',function(buffer){
+	convolver.buffer = buffer;
+});
+
 var spatialPanner = ctx.createPanner();
+var convolver = ctx.createConvolver();
 
 var input = ctx.createGain();
 
-input.connect(spatialPanner);
+input.connect(convolver);
+convolver.connect(spatialPanner);
 spatialPanner.connect(ctx.destination);
 
 
